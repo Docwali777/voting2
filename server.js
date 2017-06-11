@@ -39,6 +39,14 @@ passport.use(new LocalStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
+app.use((req, res, next)=>{
+  res.locals = {
+    user: req.user
+  }
+  console.log(`App.use:`, res.locals.user);
+  next()
+})
+
 app.use(Router)
 
 app.get('/votes', (req, res)=>{

@@ -5,7 +5,10 @@ const User = require('../models/user')
 const userController = {}
 
 userController.home = (req, res)=>{
-  res.render('home_auth/home')
+    console.log('userController.home',req.user);
+  res.render('home_auth/home', {
+      user: req.user
+  })
 }
 
 
@@ -27,6 +30,7 @@ User.register(new User({
 }
 
 userController.login = (req, res)=>{
+    console.log(req.user);
   res.render('home_auth/login')
 }
 //post
@@ -38,6 +42,11 @@ userController.postlogin = (req, res)=>{
   })(req, res, ()=>{
     res.redirect('/')
   })
+}
+
+userController.logout = (req, res)=>{
+  req.logout()
+  res.redirect('/')
 }
 
 
