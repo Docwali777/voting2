@@ -9,14 +9,13 @@
       <div class="panel-body">
         <h1><%= options.options.title %></h1>
         <div>
-      <form action="">
-      <dov class="form-group">
-        <select class='form-control' name="" id="">
-          <h1><% options.options.select.map(vote=>{ %></h1>
-                <option name= '<%= vote.select %> '><%= vote.select %></option>
-        <%  }) %>
-        </select>
-      </dov>
+      <form action="/votes/<%= options._id %>/data %>" method='post'>
+        <% options.options.select.map(vote=>{ %>
+              <input type='radio' value= '<%= vote %>' name='<%= vote %>'> <%= vote %>
+              <input type="radio" name='label'>
+
+      <%  }) %>
+      <button>Submit Data</button>
       </form>
         </div>
       </div>
@@ -25,7 +24,7 @@
     <form class='form-inline form-group' action="/votes/<%=options._id %>/edit" method="post">
 
   <button class='btn btn-success'>Add </button>
-    <input class='form-control' type="text" name='select' placeholder="Add options">
+    <input class='form-control' type="text" name='select' placeholder="Add options" required="Enter Option">
     </form>
 
 

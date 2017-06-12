@@ -21,6 +21,19 @@ vote.new= (req, res)=>{
 res.render('votes/new')
 }
 
+vote.dataById = (req, res)=>{
+  console.log(req.body);
+  voteData.findById(req.params.id, (err, vote)=>{
+    if(err){console.log('cant find data for ID in vote.dataById');}
+    else {
+      console.log(vote);
+
+      res.redirect(`/votes/${req.params.id}`)
+
+    }
+  })
+}
+
 
 vote.deleteById = (req, res)=>{
   voteData.findByIdAndRemove(req.params.id, (err, options)=>{
@@ -33,16 +46,33 @@ vote.deleteById = (req, res)=>{
 }
 
 vote.editById = (req, res)=>{
-  console.log(req.body);
 voteData.findById(req.params.id, (err, options)=>{
   if(err){console.log('error editing post by id: ', err);}
   else {
-    options.options.select.push(req.body)
-    options.save()
-    console.log(`OPTIONS`,options.options.select);
-      res.redirect(`/votes/${req.params.id}`)
+// options.options.select.push(req.body.select)
+if(options.options.select.indexOf(req.body.select) < 0){
+
+
+  options.options.select.push(req.body.select)
+  // console.log(options.options.select);
+console.log(  options.options.select.indexOf(req.body.select))
+}
+
+// console.log(`new`, options.options.select);
+options.save((err, vote)=>{
+  if(err){console.log(err);  }
+  else{
+    console.log('save');
+    console.log(vote);
+        res.redirect(`/votes/${req.params.id}`)
   }
 })
+
+    // console.log(`OPTIONS`,options.options.select);
+  }
+})
+
+
 
 }
 
@@ -50,7 +80,9 @@ vote.postvote = (req, res)=>{
   console.log('new', req.body);
 voteData.create({
   options: {
-    title: req.body.title
+    title: req.body.title,
+    created: new Date(),
+    select: []
   }
 }, (err, options)=>{
   if(err)console.log('options not created');

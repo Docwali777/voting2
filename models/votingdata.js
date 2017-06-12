@@ -4,7 +4,10 @@ let {Schema} = mongoose
 const votingDataSchema = new Schema({
   options: {
     title: String,
-    select: []
+    select: [],
+    created: {
+          type: Date
+    }
   }
 })
 

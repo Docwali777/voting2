@@ -16,6 +16,8 @@ router.get('/votes/:id/delete', vote.deleteById)
 
 router.post('/votes/:id/edit', vote.editById)
 
+router.post('/votes/:id/data', vote.dataById)
+
 
 
 module.exports = router
