@@ -42,7 +42,8 @@ passport.deserializeUser(User.deserializeUser())
 
 app.use((req, res, next)=>{
   res.locals = {
-    user: req.user
+    user: req.user,
+    options: {}
   }
   console.log(`App.use.vote:`, res.locals.options);
   next()

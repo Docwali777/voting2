@@ -10,6 +10,7 @@
   <div class="panel panel-default">
     <div class="panel-body">
       <%= vote.options.title %>
+        <a href="/votes/<%= vote._id %>/delete"><button class='btn btn-danger pull-right'>Delete</button></a>
       <a href="/votes/<%= vote._id %>"><button class='btn btn-primary pull-right'>Show</button></a>
     </div>
   </div>
