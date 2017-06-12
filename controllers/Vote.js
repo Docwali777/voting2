@@ -33,7 +33,7 @@ data[i].push(req.body.label)
 }
 
 }
-
+data.sort()
 console.log('DATA',data);
     options.save()
         res.redirect(`/votes/${req.params.id}`)
@@ -59,23 +59,33 @@ vote.editById = (req, res) => {
       console.log('error editing post by id: ', err);
     } else {
       //ON=nyl add noew item if it is a new Item
-      if (options.options.select.indexOf(req.body.select) < 0) {
-        options.options.select.push(req.body.select)
-         options.options.data.push([req.body.select])
+      let {data, select} = options.options
 
+      if (select.indexOf(req.body.select) < 0) {
+        select.push(req.body.select)
+         data.push([req.body.select])
+ } else {
+   console.log('present');
+   for(let i = 0; i < data.length; i++){
+   if(data[i][0] === req.body.select){
+   data[i].push(req.body.select)
  }
+ }
+   }
 
-console.log('EDIT',  options.options.select);
+data.sort()
+
+
+
+console.log('EDIT', data);
 
       options.save((err, vote) => {
         if (err) {
-          console.log(err);
+          console.log('note added');
         } else {
           res.redirect(`/votes/${req.params.id}`)
         }
       })
-
-      // console.log(`OPTIONS`,options.options.select);
     }
   })
 
@@ -101,12 +111,25 @@ vote.postvote = (req, res) => {
 }
 
 vote.show = (req, res) => {
+
   voteData.findById(req.params.id, (err, options) => {
     if (err) {
       console.log('err find id');
     }
-    {
-      res.render('votes/show', {options})
+    else {
+      let data = options.options.data
+      console.log(data);
+      res.render('votes/show', {
+        options,
+      svg: `<script>
+      let h = 200, w = 200
+let svg = d3.select('#chart').attr('width', w).attr('height', h)
+
+let rect = svg.selectAll('rect').data(${data}).enter().append('rect')
+
+rect.attr('height', (d)=>{ d.lenght})
+    </script>`
+    })
     }
   })
 }

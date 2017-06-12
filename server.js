@@ -43,29 +43,16 @@ passport.deserializeUser(User.deserializeUser())
 app.use((req, res, next)=>{
   res.locals = {
     user: req.user,
-    options: {}
+    options: {},
+    svg: ''
   }
-  console.log(`App.use.vote:`, res.locals.options);
+  console.log(`App.use.vote:`, res.locals.svg);
   next()
 })
 
 
 app.use(Router)
 app.use(Vote)
-
-
-
-// votingData.create({
-//   title: 'pretty girl',
-//   options: 'none'
-// }, (err, vote)=>{
-//   if(err){console.log(err);}
-//   else {
-//     console.log('saved');
-//     vote.save()
-//   }
-// })
-
 
 
 //local server
