@@ -1,0 +1,35 @@
+<% include ../partials/header %>
+
+
+<div class="container">
+
+  <div class="row">
+    <h1>Edit Show</h1>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h1><%= options.options.title %></h1>
+        <div>
+      <form action="">
+      <dov class="form-group">
+        <select class='form-control' name="" id="">
+          <h1><% options.options.select.map(vote=>{ %></h1>
+                <option name= '<%= vote.select %> '><%= vote.select %></option>
+        <%  }) %>
+        </select>
+      </dov>
+      </form>
+        </div>
+      </div>
+
+    </div>
+    <form class='form-inline form-group' action="/votes/<%=options._id %>/edit" method="post">
+
+  <button class='btn btn-success'>Add </button>
+    <input class='form-control' type="text" name='select' placeholder="Add options">
+    </form>
+
+
+    <a href="/votes">Go Back</a>
+
+  </div>
+</div>

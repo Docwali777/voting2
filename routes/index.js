@@ -10,7 +10,7 @@ const isLoggedin = ((req, res, next)=>{
 })
 
 //home
-router.get('/', isLoggedin, auth.home)
+router.get('/', auth.home)
 
 //Register
 router.get('/register', auth.register)

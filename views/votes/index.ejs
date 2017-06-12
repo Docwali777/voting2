@@ -1,0 +1,20 @@
+
+<% include ../partials/header %>
+
+<div class="container">
+  <div class="row">
+    <h1>All Votes</h1>
+
+<div class="panel-group">
+<% options.map(vote=>{ %>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <%= vote.options.title %>
+      <a href="/votes/<%= vote._id %>"><button class='btn btn-primary pull-right'>Show</button></a>
+    </div>
+  </div>
+<% }) %>
+</div>
+    <a href="/votes/new">Create a new Vote</a>
+  </div>
+</div>

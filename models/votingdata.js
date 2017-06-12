@@ -2,8 +2,10 @@ const mongoose = require('mongoose');
 let {Schema} = mongoose
 
 const votingDataSchema = new Schema({
-  title: String,
-  options: Array
+  options: {
+    title: String,
+    select: []
+  }
 })
 
 

@@ -14,10 +14,11 @@ const User = require('./models/user')
 
 //Require Routes
 const Router = require('./routes/index')
+const Vote = require('./routes/vote')
 
 
 app.use(express.static(__dirname + '/public'))
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: true}))
 app.set('view engine', 'ejs')
 //express server
 
@@ -43,17 +44,26 @@ app.use((req, res, next)=>{
   res.locals = {
     user: req.user
   }
-  console.log(`App.use:`, res.locals.user);
+  console.log(`App.use.vote:`, res.locals.options);
   next()
 })
 
+
 app.use(Router)
-
-app.get('/votes', (req, res)=>{
-  res.render('index')
-})
+app.use(Vote)
 
 
+
+// votingData.create({
+//   title: 'pretty girl',
+//   options: 'none'
+// }, (err, vote)=>{
+//   if(err){console.log(err);}
+//   else {
+//     console.log('saved');
+//     vote.save()
+//   }
+// })
 
 
 
