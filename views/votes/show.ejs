@@ -11,8 +11,7 @@
         <div>
       <form action="/votes/<%= options._id %>/data %>" method='post'>
         <% options.options.select.map(vote=>{ %>
-              <input type='radio' value= '<%= vote %>' name='<%= vote %>'> <%= vote %>
-              <input type="radio" name='label'>
+              <input type='radio' value= '<%= vote %>' name='label'> <%= vote %>
 
       <%  }) %>
       <button>Submit Data</button>
