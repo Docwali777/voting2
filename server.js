@@ -14,7 +14,7 @@ const User = require('./models/user')
 
 //Require Routes
 const Router = require('./routes/index')
-const Vote = require('./routes/vote')
+const Vote = require('./routes/Vote')
 
 
 app.use(express.static(__dirname + '/public'))
