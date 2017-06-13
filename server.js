@@ -22,11 +22,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.set('view engine', 'ejs')
 //express server
 
-if(process.env.NODE_ENV !== 'production'){
-  MONGODB_URI = 'mongodb://localhost/d3_vote'
-} else {
-  MONGODB_URI = process.env.MONGOLAB_URI
-}
+
 
 app.use(require('express-session')({
   secret: 'baby blues',
@@ -54,6 +50,12 @@ app.use((req, res, next)=>{
 app.use(Router)
 app.use(Vote)
 
+if(process.env.NODE_ENV !== 'production'){
+  MONGODB_URI = 'mongodb://localhost/d3_vote'
+} else {
+  MONGODB_URI = process.env.MONGODB_URI
+  // process.env.MONGOLAB_URI
+}
 
 //local server
 mongoose.connect(MONGODB_URI)
@@ -64,3 +66,4 @@ mongoose.connect(MONGODB_URI)
 app.listen(PORT, ()=>{
   console.log(`server is on port: ${PORT}`);
 })
+console.log(MONGODB_URI);
