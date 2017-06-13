@@ -25,7 +25,7 @@ app.set('view engine', 'ejs')
 if(process.env.NODE_ENV !== 'production'){
   MONGODB_URI = 'mongodb://localhost/d3_vote'
 } else {
-  MONGODB_URI = process.env.MONGOLAB_JADE_URI
+  MONGODB_URI = process.env.MONGOLAB_URI
 }
 
 app.use(require('express-session')({
