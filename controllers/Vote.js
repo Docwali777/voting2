@@ -164,11 +164,11 @@ rect.attr('x', (d, i)=>{return xScale(i) + margin.left})
     .attr('height', (d, i)=>{return h - yScale(d)})
     .attr('fill', 'steelblue')
 
-    svg.append("g").call(d3.axisLeft(yScale).ticks(2))
+    svg.append("g").call(d3.axisLeft(yScale).ticks(10))
     .attr("transform", "translate(" + margin.left + ")")
 
   svg.append("g").call(d3.axisBottom(xAxis).tickFormat(d3.timeFormat("%Y")).ticks(22))
-    .attr("transform", "translate(" + margin.left + ", h)")
+    .attr("transform", "translate(" + margin.left + "," +  h + ")")
 
     </script>`
     })
