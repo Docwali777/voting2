@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router({mergeParams: true})
-const vote = require('../controllers/vote')
+const vote = require('../controllers/Vote')
 
 router.get('/votes', vote.index)
 
