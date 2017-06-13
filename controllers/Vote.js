@@ -117,22 +117,26 @@ vote.show = (req, res) => {
       console.log('err find id');
     }
     else {
-      let data = options.options.data
+      let {data, select} = options.options
       let datum =  data.map(d=>{
         return d.length
       })
+
       res.render('votes/show', {
         options,
       svg: `<script>
+
+
         var margin = {
     top: 90,
     bottom: 100,
     left: 70,
     right: 100
   },
-  w = 400 - margin.top - margin.bottom,
-  h = 300 - margin.left - margin.right;
+  w = 600 - margin.top - margin.bottom,
+  h = 500 - margin.left - margin.right;
 let dataPoints = [${datum}]
+let selectData = ['${select}'][0].split(',')
 
 let svg = d3.select('#chart').append('svg').attr("width", w + margin.left + margin.right)
   .attr("height", h + margin.top + margin.bottom)
@@ -155,21 +159,50 @@ let svg = d3.select('#chart').append('svg').attr("width", w + margin.left + marg
       .domain(dataPoints)
       .range([0, w])
 
+    var x = d3.scaleBand()
+          .range([0, w])
+          .padding(0.1);
+
+          var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+          var tip = d3.tip().attr('class', 'd3-tip').html((d, i)=> {
+              return d;
+            });
 
 let rect = svg.selectAll('rect').data([${datum}]).enter().append('rect')
 
-rect.attr('x', (d, i)=>{return xScale(i) + margin.left})
+
+    rect.attr('x', (d, i)=>{return xScale(i) + margin.left})
     .attr('y', (d, i)=>{return yScale(d)})
-    .attr('width', w/ [${datum}].length - 10 )
+    .attr('width', w/ [${datum}].length - 10 ) //w/ [${datum}].length - 10
     .attr('height', (d, i)=>{return h - yScale(d)})
-    .attr('fill', 'steelblue')
+    .attr('fill', (d, i)=>{return color(i)})
+
+
+
+var text  =  svg.selectAll("text")
+       .data(selectData)
+       .enter()
+       .append("text")
+
+
+       text.call(tip)
+         .attr("x", function(d, i) {return i })
+        .attr("y", function(d) {return h - 50})
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "11px")
+        .attr("fill", "black")
+        .html(d=>'<p> d </p>')
+        .on("mouseover", tip.show)
+        .on("mouseout", tip.hide)
+
+
 
     svg.append("g").call(d3.axisLeft(yScale).ticks(10))
-    .attr("transform", "translate(" + margin.left + ")")
+    .attr("transform", "translate(" + margin.left + ")" )
 
-  svg.append("g").call(d3.axisBottom(xAxis).tickFormat(d3.timeFormat("%Y")).ticks(22))
-    .attr("transform", "translate(" + margin.left + "," +  h + ")")
-
+    svg.append("g").call(d3.axisBottom(xAxis).ticks(0))
+        .attr("transform", "translate(" + margin.left + "," + h + ")")
     </script>`
     })
     }
