@@ -118,16 +118,58 @@ vote.show = (req, res) => {
     }
     else {
       let data = options.options.data
-      console.log(data);
+      let datum =  data.map(d=>{
+        return d.length
+      })
       res.render('votes/show', {
         options,
       svg: `<script>
-      let h = 200, w = 200
-let svg = d3.select('#chart').attr('width', w).attr('height', h)
+        var margin = {
+    top: 90,
+    bottom: 100,
+    left: 70,
+    right: 100
+  },
+  w = 400 - margin.top - margin.bottom,
+  h = 300 - margin.left - margin.right;
+let dataPoints = [${datum}]
 
-let rect = svg.selectAll('rect').data(${data}).enter().append('rect')
+let svg = d3.select('#chart').append('svg').attr("width", w + margin.left + margin.right)
+  .attr("height", h + margin.top + margin.bottom)
+  .append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-rect.attr('height', (d)=>{ d.lenght})
+  var maxYValue = d3.max(dataPoints, function(d) {
+     return d
+   })
+
+   var yScale = d3.scaleLinear()
+       .domain([0, maxYValue])
+       .range([h, 0])
+
+       var xScale = d3.scaleLinear()
+  .domain([0, [${datum}].length])
+  .range([0, w])
+
+  var xAxis = d3.scaleLinear()
+      .domain(dataPoints)
+      .range([0, w])
+
+
+let rect = svg.selectAll('rect').data([${datum}]).enter().append('rect')
+
+rect.attr('x', (d, i)=>{return xScale(i) + margin.left})
+    .attr('y', (d, i)=>{return yScale(d)})
+    .attr('width', w/ [${datum}].length - 10 )
+    .attr('height', (d, i)=>{return h - yScale(d)})
+    .attr('fill', 'steelblue')
+
+    svg.append("g").call(d3.axisLeft(yScale).ticks(2))
+    .attr("transform", "translate(" + margin.left + ")")
+
+  svg.append("g").call(d3.axisBottom(xAxis).tickFormat(d3.timeFormat("%Y")).ticks(22))
+    .attr("transform", "translate(" + margin.left + ", h)")
+
     </script>`
     })
     }
