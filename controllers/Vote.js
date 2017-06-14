@@ -119,20 +119,31 @@ vote.show = (req, res) => {
     else {
 
       let {data, select} = options.options
+    data.sort((a, b)=>{
 
-      data.sort()
-//sort data tp match the title with the values for d3 chart
+    })
+
+// sort data tp match the title with the values for d3 chart
       select.sort((a, b)=>{
-        return a[0] > b[0]
+        console.log('a', a);
+        console.log('b', b);
+        return a > b
+
       })
+console.log('SELECT ', select);
 
 let allData = []
 for(let i = 0; i < data.length; i++){
-  allData.push({title: select[i], data: data[i].length})
+  console.log('select[i]', select[i]);
+  console.log('data[i]', data[i]);
+
+    allData.push({title: select[i], data: data[i].length})
+
 }
 
 console.log('DATA ',data);
 console.log('SELECT ', select);
+console.log('allData', allData);
 // console.log('All Data ', (allData))
 
       let datum =  data.map(d=>{

@@ -1,17 +1,14 @@
 .xText {
-font-size: 1.5em;
-/*text-align: center;*/
-
-}
-.xText:hover {
-font-size: 3em;
-transform: rotate(0deg);
-transform: translate(60px, 40px );
-background-color: auto;
-
+  font-size: 3em;
+  /*text-align: center;*/
 }
 
-
+g.tick .xText:hover {
+  font-size: 3em;
+  transform: rotate(0deg);
+  transform: translate(60px, 40px);
+  background-color: auto;
+}
 
 .d3-tip {
   border: 2px solid black;
