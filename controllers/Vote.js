@@ -166,7 +166,7 @@ console.log(titles)
     left: 70,
     right: 100
   },
-  w = 600 - margin.left - margin.right,
+  w = 1200 - margin.left - margin.right,
   h = 500 - margin.top - margin.bottom;
 
 
@@ -195,9 +195,8 @@ let svg = d3.select('#chart').append('svg').attr("width", w + margin.left + marg
               .range([0, w])
 
             var x = d3.scaleBand()
-                  // .domain(joinedData)
                   .range([0, w])
-                  .padding(0.1);
+                  .padding(0.5);
 
            x.domain(joinedData.map(function(d) { return d.title; }));
             y.domain([0, d3.max(joinedData, function(d) { return d.data; })]);
@@ -219,20 +218,35 @@ let svg = d3.select('#chart').append('svg').attr("width", w + margin.left + marg
 
 
     rect.call(tip)
-    .attr('x', (d, i)=>{return x(d.title)  })
+    .attr('class', 'bar')
+    .attr('x', (d, i)=>{return x(d.title) + margin.left  })
     .attr('y', (d, i)=>{return y(d.data)})
     .attr('width', x.bandwidth())
     .attr('height', (d, i)=>{return h - y(d.data)})
     .attr('fill', (d, i)=>{return color(i)})
     .on("mouseover", tip.show)
     .on("mouseout", tip.hide)
+      .append('g')
+      .attr('class', 'xText')
+      .attr("transform", "rotate(-65)");
 
-    svg.append("g").call(d3.axisLeft(yScale).ticks(2 ))
-    .attr("transform", "translate(" + 0 + ")" )
+
+
+
+    svg.append("g").call(d3.axisLeft(yScale).ticks(10))
+    .attr("transform", "translate(" + 0 + margin.left + ")" )
 
      svg.append("g")
-      .attr("transform", "translate(0" +"," + h + ")")
-      .call(d3.axisBottom(x));
+      .attr("transform", "translate("+ margin.left +"," + h + ")")
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+        .attr('class', 'xText')
+           .style('fill', 'black')
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-65)")
+
 
 
 
