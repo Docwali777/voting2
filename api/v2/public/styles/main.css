@@ -1,0 +1,22 @@
+.xText {
+  font-size: 2em;
+  /*text-align: center;*/
+}
+
+.xText:hover {
+  font-size: 3em;
+  transform: rotate(-90deg);
+  transform: translate(60px, 40px)
+}
+
+g.Tick:hover {
+  transform: rotate(0deg);
+}
+
+.d3-tip {
+  border: 2px solid black;
+  background: rgbA(66, 241, 244, 0.5);
+  width: auto;
+  font-size: 20px;
+  padding: 3px
+}
