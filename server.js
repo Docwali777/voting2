@@ -60,7 +60,7 @@ if(process.env.NODE_ENV !== 'production'){
 //local server
 mongoose.connect(MONGODB_URI)
   .then(()=>console.log('connected to mongodb'))
-  .catch((err)=>console.log(err))
+  .catch((err)=>console.log('DB connection - NONE'))
 
 
 app.listen(PORT, ()=>{

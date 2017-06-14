@@ -117,15 +117,48 @@ vote.show = (req, res) => {
       console.log('err find id');
     }
     else {
+
       let {data, select} = options.options
+
+      data.sort()
+//sort data tp match the title with the values for d3 chart
+      select.sort((a, b)=>{
+        return a[0] > b[0]
+      })
+
+let allData = []
+for(let i = 0; i < data.length; i++){
+  allData.push({title: select[i], data: data[i].length})
+}
+
+console.log('DATA ',data);
+console.log('SELECT ', select);
+// console.log('All Data ', (allData))
+
       let datum =  data.map(d=>{
         return d.length
       })
+let points = datum;
+points = JSON.stringify(points)
+
+let all = allData.map(d=>{
+  return d
+})
+all= JSON.stringify(all)
+
+let title = select.sort()
+title= JSON.stringify(title)
+
+let selected = JSON.stringify(select)
+
 
       res.render('votes/show', {
         options,
       svg: `<script>
-
+let joinedData = ${all}
+// console.log('JOINED D3', joinedData)
+let titles = ${title}
+console.log(titles)
 
         var margin = {
     top: 90,
@@ -133,10 +166,13 @@ vote.show = (req, res) => {
     left: 70,
     right: 100
   },
-  w = 600 - margin.top - margin.bottom,
-  h = 500 - margin.left - margin.right;
+  w = 600 - margin.left - margin.right,
+  h = 500 - margin.top - margin.bottom;
+
+
 let dataPoints = [${datum}]
-let selectData = ['${select}'][0].split(',')
+let selectData = ${selected}
+
 
 let svg = d3.select('#chart').append('svg').attr("width", w + margin.left + margin.right)
   .attr("height", h + margin.top + margin.bottom)
@@ -151,58 +187,55 @@ let svg = d3.select('#chart').append('svg').attr("width", w + margin.left + marg
        .domain([0, maxYValue])
        .range([h, 0])
 
+       var y = d3.scaleLinear()
+          .range([h, 0]);
+
+          var xAxis = d3.scaleLinear()
+              .domain(titles.length)
+              .range([0, w])
+
+            var x = d3.scaleBand()
+                  // .domain(joinedData)
+                  .range([0, w])
+                  .padding(0.1);
+
+           x.domain(joinedData.map(function(d) { return d.title; }));
+            y.domain([0, d3.max(joinedData, function(d) { return d.data; })]);
+
+
        var xScale = d3.scaleLinear()
-  .domain([0, [${datum}].length])
+  .domain([0, 10])
   .range([0, w])
 
-  var xAxis = d3.scaleLinear()
-      .domain(dataPoints)
-      .range([0, w])
 
-    var x = d3.scaleBand()
-          .range([0, w])
-          .padding(0.1);
 
           var color = d3.scaleOrdinal(d3.schemeCategory10);
 
           var tip = d3.tip().attr('class', 'd3-tip').html((d, i)=> {
-              return d;
+              return '<h4>' + d.title +'<br>'+ 'Votes: '+ d.data  + '</h4>';
             });
 
-let rect = svg.selectAll('rect').data([${datum}]).enter().append('rect')
+            let rect = svg.selectAll('rect').data(joinedData).enter().append('rect')
 
 
-    rect.attr('x', (d, i)=>{return xScale(i) + margin.left})
-    .attr('y', (d, i)=>{return yScale(d)})
-    .attr('width', w/ [${datum}].length - 10 ) //w/ [${datum}].length - 10
-    .attr('height', (d, i)=>{return h - yScale(d)})
+    rect.call(tip)
+    .attr('x', (d, i)=>{return x(d.title)  })
+    .attr('y', (d, i)=>{return y(d.data)})
+    .attr('width', x.bandwidth())
+    .attr('height', (d, i)=>{return h - y(d.data)})
     .attr('fill', (d, i)=>{return color(i)})
+    .on("mouseover", tip.show)
+    .on("mouseout", tip.hide)
+
+    svg.append("g").call(d3.axisLeft(yScale).ticks(2 ))
+    .attr("transform", "translate(" + 0 + ")" )
+
+     svg.append("g")
+      .attr("transform", "translate(0" +"," + h + ")")
+      .call(d3.axisBottom(x));
 
 
 
-var text  =  svg.selectAll("text")
-       .data(selectData)
-       .enter()
-       .append("text")
-
-
-       text.call(tip)
-         .attr("x", function(d, i) {return i })
-        .attr("y", function(d) {return h - 50})
-        .attr("font-family", "sans-serif")
-        .attr("font-size", "11px")
-        .attr("fill", "black")
-        .html(d=>'<p> d </p>')
-        .on("mouseover", tip.show)
-        .on("mouseout", tip.hide)
-
-
-
-    svg.append("g").call(d3.axisLeft(yScale).ticks(10))
-    .attr("transform", "translate(" + margin.left + ")" )
-
-    svg.append("g").call(d3.axisBottom(xAxis).ticks(0))
-        .attr("transform", "translate(" + margin.left + "," + h + ")")
     </script>`
     })
     }
